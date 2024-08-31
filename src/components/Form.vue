@@ -44,11 +44,32 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-5" v-if="submittedCards.length">
+            <!-- <div class="card"> -->
+            <DataTable :value="submittedCards" table-style="min-width: 50rem">
+                <Column field="username" header="Username"></Column>
+                <Column field="password" header="Password"></Column>
+            </DataTable>
+            <!-- </div>
+            <div class="d-flex flex-wrap justify-content-start">
+                <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
+                    <div class="card-header">
+                        User Information
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Username: {{ card.username }}</li>
+                        <li class="list-group-item">Password: {{ card.password }}</li>
+                    </ul>
+                </div>
+            </div> -->
+        </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 const formData = ref({
     username: '',
@@ -59,6 +80,8 @@ const errors = ref({
     username: null,
     password: null,
 })
+
+const submittedCards = ref([])
 
 const validateName = (blur) => {
     if (formData.value.username.length < 3) {
@@ -95,7 +118,12 @@ const submitForm = () => {
     validateName(true)
     validatePassword(true)
     if (!errors.value.username && !errors.value.password) {
+        submittedCards.value.push({ ...formData.value });
         console.log('Form submitted with:', formData.value)
+        formData.value = {
+            username: '',
+            password: ''
+        };
     }
 }
 </script>
