@@ -19,6 +19,9 @@
                     <li class="nav-item" v-if="!isLoggedIn">
                         <router-link to="/register" class="nav-link" active-class="active">Register</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/rating" class="nav-link" active-class="active">Rating</router-link>
+                    </li>
                     <li v-if="isLoggedIn" class="nav-item">
                         <button @click="logout" class="btn btn-secondary">Logout</button>
                     </li>

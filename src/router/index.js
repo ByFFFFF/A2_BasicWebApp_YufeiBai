@@ -5,6 +5,7 @@ import LoginView from '@/views/LoginView.vue'
 import { ref } from 'vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
+import RatingView from '@/views/RatingView.vue'
 
 const isLoggedIn = ref(false)
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: RegisterView
+  },
+  {
+    path: '/rating',
+    name: 'Rating',
+    component: RatingView
   }
 ]
 
