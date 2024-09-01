@@ -50,6 +50,10 @@
             </div>
         </div>
     </div>
+
+    <!-- <div class="main-content" style="position: absolute; top: 50%; left: 10%; transform: translate(0, -50%);">
+        <h2> This is login page!!! </h2>
+    </div> -->
 </template>
 
 <script setup>
@@ -99,8 +103,10 @@ const submitForm = () => {
         if (user) {
             console.log('Form submitted with:', formData.value)
             isLoggedIn.value = true
+            localStorage.setItem('userRole', user.role)
+            localStorage.setItem('isLoggedIn', 'true')
             alert("Login success")
-            router.push({ name: 'About' })
+            router.push({ name: user.role === 'admin' ? 'Admin' : 'About' })
             formData.value = {
                 username: '',
                 password: ''

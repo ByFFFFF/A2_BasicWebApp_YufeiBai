@@ -64,6 +64,11 @@
             </div> -->
         </div>
     </div>
+
+    <!-- <div class="main-content" style="position: absolute; top: 50%; left: 10%; transform: translate(0, -50%);">
+        <h2>Welcome to Global Steps!</h2>
+        <p> You can totally trust us! </p>
+    </div> -->
 </template>
 
 <script setup>

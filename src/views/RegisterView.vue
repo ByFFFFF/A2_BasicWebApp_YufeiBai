@@ -15,6 +15,15 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
+                                <label for="role" class="form-label">Role</label>
+                                <select v-model="formData.role" class="form-control">
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" v-model="formData.email"
                                     @blur="validateEmail" @input="validateEmail" />
@@ -58,6 +67,10 @@
             </div>
         </div>
     </div>
+
+    <!-- <div class="main-content" style="position: absolute; top: 50%; left: 10%; transform: translate(0, -50%);">
+        <h2> This is register page!!! </h2>
+    </div> -->
 </template>
 
 <script setup>
@@ -69,6 +82,7 @@ const formData = ref({
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'user',
 })
 
 const errors = ref({
@@ -139,6 +153,7 @@ const submitForm = () => {
             username: formData.value.username,
             email: formData.value.email,
             password: formData.value.password,
+            role: formData.value.role,
         };
 
         let users = JSON.parse(localStorage.getItem('users')) || [];

@@ -10,10 +10,13 @@
                     <li class="nav-item">
                         <router-link to="/about" class="nav-link" active-class="active">About Us</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="isAdmin">
+                        <router-link to="/admin" class="nav-link" active-class="active">Admin</router-link>
+                    </li>
+                    <li class="nav-item" v-if="!isLoggedIn">
                         <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="!isLoggedIn">
                         <router-link to="/register" class="nav-link" active-class="active">Register</router-link>
                     </li>
                     <li v-if="isLoggedIn" class="nav-item">
@@ -26,13 +29,32 @@
 </template>
 
 <script setup>
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { isLoggedIn } from '@/router'
 
 const router = useRouter()
 
+const isAdmin = ref(false)
+
+onMounted(() => {
+    updateUserRole()
+})
+
+watch(isLoggedIn, () => {
+    updateUserRole()
+})
+
+const updateUserRole = () => {
+    const userRole = localStorage.getItem('userRole')
+    isAdmin.value = userRole === 'admin'
+}
+
 const logout = () => {
     isLoggedIn.value = false
+    isAdmin.value = false
+    localStorage.removeItem('isLoggedIn')
+    localStorage.removeItem('userRole')
     alert("You have been logged out.")
     router.push({ name: 'Login' })
 }
