@@ -1,17 +1,13 @@
+// index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '@/views/LoginView.vue'
-import { ref } from 'vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RatingView from '@/views/RatingView.vue'
 
-const isLoggedIn = ref(false)
-
-if (localStorage.getItem('isLoggedIn') === 'true') {
-  isLoggedIn.value = true
-}
+import { auth } from '../firebaseConfig'
 
 const routes = [
   {
@@ -28,7 +24,7 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: AdminView,
-    meta: { roles: ['admin'] }
+    meta: { roles: ['admin'], requiresAuth: true }
   },
   {
     path: '/login',
@@ -53,10 +49,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const currentUser = auth.currentUser
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
   const role = localStorage.getItem('userRole')
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
 
-  if ((to.name === 'Admin' || to.name === 'About') && !isLoggedIn) {
+  if (requiresAuth && !currentUser) {
     alert('You must be logged in to access this page.')
     next({ name: 'Login' })
   } else if (to.name === 'Admin' && role !== 'admin') {
@@ -67,10 +64,4 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-export function setLoginStatus(status) {
-  isLoggedIn.value = status
-  localStorage.setItem('isLoggedIn', status)
-}
-
 export default router
-export { isLoggedIn }

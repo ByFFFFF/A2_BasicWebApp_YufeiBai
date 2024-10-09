@@ -7,10 +7,10 @@
                     <form @submit.prevent="submitForm" class="form-group">
                         <div class="row mb-3">
                             <div class="col-sm-12">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" v-model="formData.username"
-                                    @blur="validateName" @input="validateName" />
-                                <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" v-model="formData.email"
+                                    @blur="validateEmail" @input="validateEmail" />
+                                <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -29,14 +29,6 @@
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-secondary w-100">Login with Google</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-secondary w-100">Login with Facebook</button>
-                            </div>
-                        </div>
                         <div class="text-center mt-4">
                             <p>Don’t have an account? <router-link to="/register">Register here.</router-link></p>
                         </div>
@@ -50,75 +42,60 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="main-content" style="position: absolute; top: 50%; left: 10%; transform: translate(0, -50%);">
-        <h2> This is login page!!! </h2>
-    </div> -->
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import router from '../router';
-import { isLoggedIn } from '@/router/index.js'
+import { useRouter } from 'vue-router'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 const formData = ref({
-    username: '',
+    email: '',
     password: '',
 })
 
 const errors = ref({
-    username: null,
+    email: null,
     password: null,
 })
 
 const errorMessage = ref(null)
+const router = useRouter()
 
-const validateName = () => {
-    if (formData.value.username.length < 3) {
-        errors.value.username = 'Username must be at least 3 characters!!!'
+const validateEmail = () => {
+    if (!formData.value.email) {
+        errors.value.email = 'Email is required!'
     } else {
-        errors.value.username = null
+        errors.value.email = null
     }
 }
 
 const validatePassword = () => {
     if (formData.value.password.length < 6) {
-        errors.value.password = `Password must be at least 6 characters!!!.`
+        errors.value.password = 'Password must be at least 6 characters!'
     } else {
         errors.value.password = null
     }
 }
 
 const submitForm = () => {
-    validateName()
+    validateEmail()
     validatePassword()
 
-    if (!errors.value.username && !errors.value.password) {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-
-        const user = users.find(user =>
-            user.username === formData.value.username && user.password === formData.value.password
-        );
-
-        if (user) {
-            console.log('Form submitted with:', formData.value)
-            isLoggedIn.value = true
-            localStorage.setItem('userRole', user.role)
-            localStorage.setItem('isLoggedIn', 'true')
-            alert("Login success")
-            router.push({ name: user.role === 'admin' ? 'Admin' : 'About' })
-            formData.value = {
-                username: '',
-                password: ''
-            }
-            errorMessage.value = null
-        } else {
-            errorMessage.value = "Incorrect username or password!"
-        }
+    if (!errors.value.email && !errors.value.password) {
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth, formData.value.email, formData.value.password)
+            .then((userCredential) => {
+                const user = userCredential.user
+                localStorage.setItem('userRole', 'user')
+                alert('Login successful!')
+                router.push({ name: 'Home' })
+            })
+            .catch((error) => {
+                errorMessage.value = error.message
+            })
     }
 }
-
-
 </script>
 
 <style scoped>

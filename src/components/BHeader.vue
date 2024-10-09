@@ -34,18 +34,17 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { isLoggedIn } from '@/router'
+import { getAuth } from 'firebase/auth'
 
 const router = useRouter()
+const auth = getAuth()
 
+const isLoggedIn = ref(false)
 const isAdmin = ref(false)
 
 onMounted(() => {
     updateUserRole()
-})
-
-watch(isLoggedIn, () => {
-    updateUserRole()
+    watchAuthState()
 })
 
 const updateUserRole = () => {
@@ -53,13 +52,26 @@ const updateUserRole = () => {
     isAdmin.value = userRole === 'admin'
 }
 
+const watchAuthState = () => {
+    isLoggedIn.value = !!auth.currentUser
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            isLoggedIn.value = true
+        } else {
+            isLoggedIn.value = false
+        }
+    })
+}
+
 const logout = () => {
-    isLoggedIn.value = false
-    isAdmin.value = false
-    localStorage.removeItem('isLoggedIn')
-    localStorage.removeItem('userRole')
-    alert("You have been logged out.")
-    router.push({ name: 'Login' })
+    auth.signOut().then(() => {
+        isLoggedIn.value = false
+        isAdmin.value = false
+        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('userRole')
+        alert("You have been logged out.")
+        router.push({ name: 'Login' })
+    })
 }
 </script>
 

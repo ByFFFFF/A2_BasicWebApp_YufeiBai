@@ -23,14 +23,12 @@
 <script setup>
 import { ref } from 'vue';
 
-// 定义要评分的项目
 const ratingItems = ref([
     { title: 'Service Quality', rating: 0 },
     { title: 'Customer Support', rating: 0 },
     { title: 'Website Usability', rating: 0 },
 ]);
 
-// 定义评分函数
 const rateItem = (index, rating) => {
     ratingItems.value[index].rating = rating;
 };
