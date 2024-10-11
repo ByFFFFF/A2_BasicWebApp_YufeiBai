@@ -22,6 +22,9 @@
                     <li class="nav-item">
                         <router-link to="/rating" class="nav-link" active-class="active">Rating</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/dataTables" class="nav-link" active-class="active">Data Tables</router-link>
+                    </li>
                     <li v-if="isLoggedIn" class="nav-item">
                         <button @click="logout" class="btn btn-secondary">Logout</button>
                     </li>

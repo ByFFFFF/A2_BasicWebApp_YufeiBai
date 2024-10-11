@@ -57,7 +57,7 @@ import { useRouter } from 'vue-router'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { db } from '../firebaseConfig'
 import { doc, setDoc } from 'firebase/firestore'
-import { sendEmail } from '../emailService';
+// import { sendEmail } from '../emailService';
 
 const formData = ref({
     email: '',
@@ -105,7 +105,7 @@ const submitForm = () => {
                         role: formData.value.role
                     })
 
-                    await sendEmail(formData.value.email, 'Welcome to our platform!', '<p>Thank you for registering!</p>')
+                    // await sendEmail(formData.value.email, 'Welcome to our platform!', '<p>Thank you for registering!</p>')
 
                     alert('Registration successful! A welcome email has been sent.')
                     router.push({ name: 'Login' })

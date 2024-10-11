@@ -11,6 +11,10 @@ import Aura from '@primevue/themes/aura'
 
 import { auth } from './firebaseConfig'
 
+import 'primevue/resources/themes/saga-blue/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
+
 const app = createApp(App)
 app.use(PrimeVue, {
   theme: {

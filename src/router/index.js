@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RatingView from '@/views/RatingView.vue'
+import DataTablesView from '@/views/DataTablesView.vue'
 
 import { auth } from '../firebaseConfig'
 
@@ -40,6 +41,11 @@ const routes = [
     path: '/rating',
     name: 'Rating',
     component: RatingView
+  },
+  {
+    path: '/dataTables',
+    name: 'DataTables',
+    component: DataTablesView
   }
 ]
 
