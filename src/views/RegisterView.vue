@@ -55,6 +55,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { db } from '../firebaseConfig'
+import { doc, setDoc } from 'firebase/firestore'
 
 const formData = ref({
     email: '',
@@ -92,12 +94,20 @@ const submitForm = () => {
 
     if (!errors.value.email && !errors.value.password) {
         const auth = getAuth()
+
         createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 const user = userCredential.user
-                localStorage.setItem('userRole', formData.value.role)
-                alert('Registration successful!')
-                router.push({ name: 'Login' })
+                try {
+                    await setDoc(doc(db, 'users', user.uid), {
+                        email: formData.value.email,
+                        role: formData.value.role
+                    })
+                    alert('Registration successful!')
+                    router.push({ name: 'Login' })
+                } catch (error) {
+                    errorMessage.value = 'Failed to save user role!'
+                }
             })
             .catch((error) => {
                 errorMessage.value = error.message

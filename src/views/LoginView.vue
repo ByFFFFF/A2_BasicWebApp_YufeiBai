@@ -48,6 +48,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../firebaseConfig'
 
 const formData = ref({
     email: '',
@@ -84,12 +86,25 @@ const submitForm = () => {
 
     if (!errors.value.email && !errors.value.password) {
         const auth = getAuth()
+
         signInWithEmailAndPassword(auth, formData.value.email, formData.value.password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 const user = userCredential.user
-                localStorage.setItem('userRole', 'user')
-                alert('Login successful!')
-                router.push({ name: 'Home' })
+
+                const userDoc = await getDoc(doc(db, 'users', user.uid))
+                if (userDoc.exists()) {
+                    const userData = userDoc.data()
+                    localStorage.setItem('userRole', userData.role)
+                    alert('Login successful!')
+
+                    if (userData.role === 'admin') {
+                        router.push({ name: 'Admin' })
+                    } else {
+                        router.push({ name: 'Home' })
+                    }
+                } else {
+                    errorMessage.value = 'User role not found!'
+                }
             })
             .catch((error) => {
                 errorMessage.value = error.message

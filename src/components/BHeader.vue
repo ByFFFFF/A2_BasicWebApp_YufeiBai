@@ -33,10 +33,11 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { getAuth } from 'firebase/auth'
 
 const router = useRouter()
+const route = useRoute()
 const auth = getAuth()
 
 const isLoggedIn = ref(false)
@@ -45,6 +46,10 @@ const isAdmin = ref(false)
 onMounted(() => {
     updateUserRole()
     watchAuthState()
+})
+
+watch(route, () => {
+    updateUserRole()
 })
 
 const updateUserRole = () => {
@@ -57,6 +62,7 @@ const watchAuthState = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             isLoggedIn.value = true
+            updateUserRole()
         } else {
             isLoggedIn.value = false
         }
