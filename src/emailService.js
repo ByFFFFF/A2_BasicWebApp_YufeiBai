@@ -1,15 +1,15 @@
 import postmark from 'postmark'
 
-const client = new postmark.ServerClient('55541eab-1a9d-495a-920e-659ca5ba4d3c')
+const client = new postmark.ServerClient('01e582c2-eb76-488a-bd32-d6c8f3bd7484')
 
 export const sendEmail = async (to, subject, body) => {
   try {
     const response = await client.sendEmail({
-      From: 'ybai0043@student.monash.edu',
+      From: 'm41012003@zznoo.com',
       To: to,
       Subject: subject,
       HtmlBody: body,
-      MessageStream: 'a3'
+      MessageStream: 'a3_basicwebapp_yufeibai'
     })
 
     console.log('Email sent successfully:', response)
@@ -19,3 +19,5 @@ export const sendEmail = async (to, subject, body) => {
     throw error
   }
 }
+
+console.log('Postmark client initialized:', client)
