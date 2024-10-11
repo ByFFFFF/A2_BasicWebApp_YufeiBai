@@ -57,6 +57,7 @@ import { useRouter } from 'vue-router'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { db } from '../firebaseConfig'
 import { doc, setDoc } from 'firebase/firestore'
+import { sendEmail } from '../emailService';
 
 const formData = ref({
     email: '',
@@ -103,10 +104,13 @@ const submitForm = () => {
                         email: formData.value.email,
                         role: formData.value.role
                     })
-                    alert('Registration successful!')
+
+                    await sendEmail(formData.value.email, 'Welcome to our platform!', '<p>Thank you for registering!</p>')
+
+                    alert('Registration successful! A welcome email has been sent.')
                     router.push({ name: 'Login' })
                 } catch (error) {
-                    errorMessage.value = 'Failed to save user role!'
+                    errorMessage.value = 'Failed to save user role or send email!'
                 }
             })
             .catch((error) => {
@@ -119,6 +123,7 @@ const goToLogin = () => {
     router.push({ name: 'Login' })
 }
 </script>
+
 
 <style scoped>
 h1 {
