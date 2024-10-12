@@ -33,3 +33,5 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### BR(D4) Deployment to the Cloud : 7c4c9260.a2-basicwebapp-yufeibai.pages.dev
