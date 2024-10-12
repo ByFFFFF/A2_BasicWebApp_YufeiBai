@@ -1,163 +1,164 @@
 <template>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div>
-                    <h1 class="text-center">Global Steps</h1>
-                    <form @submit.prevent="submitForm" class="form-group">
-                        <div class="row mb-3">
-                            <div class="col-sm-12">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" v-model="formData.username"
-                                    @blur="() => validateName(true)" @input="() => validateName(false)" />
-                                <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-12">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" v-model="formData.password"
-                                    @blur="() => validatePassword(true)" @input="() => validatePassword(false)" />
-                                <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-secondary w-100">Forgot Password?</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="submit" class="btn btn-primary w-100">Login</button>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-secondary w-100">Login with Google</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-secondary w-100">Login with Facebook</button>
-                            </div>
-                        </div>
-                        <div class="text-center mt-4">
-                            <p>Don’t have an account? <a href="#">Register here.</a></p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-5" v-if="submittedCards.length">
-            <!-- <div class="card"> -->
-            <DataTable :value="submittedCards" table-style="min-width: 50rem">
-                <Column field="username" header="Username"></Column>
-                <Column field="password" header="Password"></Column>
-            </DataTable>
-            <!-- </div>
-            <div class="d-flex flex-wrap justify-content-start">
-                <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
-                    <div class="card-header">
-                        User Information
+    <div class="home-wrapper">
+        <div class="home-container">
+            <section class="welcome-section">
+                <h1>Welcome to Global Steps</h1>
+                <p>Helping immigrants navigate their new lives with comprehensive resources and support.</p>
+            </section>
+
+            <section class="features-section">
+                <h2>Our Key Services</h2>
+                <div class="features">
+                    <div class="feature">
+                        <img :src="languageIcon" alt="Language Learning" />
+                        <h3>Language Learning</h3>
+                        <p>Improve your language skills through our specially designed programs, available in multiple
+                            languages.</p>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Username: {{ card.username }}</li>
-                        <li class="list-group-item">Password: {{ card.password }}</li>
-                    </ul>
+                    <div class="feature">
+                        <img :src="jobIcon" alt="Job Training" />
+                        <h3>Vocational Training</h3>
+                        <p>Access training resources to help you prepare for the job market and find meaningful
+                            employment.
+                        </p>
+                    </div>
+                    <div class="feature">
+                        <img :src="healthIcon" alt="Health Support" />
+                        <h3>Health Information</h3>
+                        <p>Find reliable health information and services, including mental health support to manage
+                            cultural
+                            adjustment challenges.</p>
+                    </div>
                 </div>
-            </div> -->
+            </section>
+
+            <section class="testimonials-section">
+                <h2>What Our Users Say</h2>
+                <div class="testimonials">
+                    <div class="testimonial">
+                        <p>"Global Steps has been a lifesaver. I found the language classes so helpful!"</p>
+                        <p>- User A</p>
+                    </div>
+                    <div class="testimonial">
+                        <p>"Thanks to the vocational training, I now have a stable job in my new country."</p>
+                        <p>- User B</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-
-    <!-- <div class="main-content" style="position: absolute; top: 50%; left: 10%; transform: translate(0, -50%);">
-        <h2>Welcome to Global Steps!</h2>
-        <p> You can totally trust us! </p>
-    </div> -->
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-
-const formData = ref({
-    username: '',
-    password: '',
-})
-
-const errors = ref({
-    username: null,
-    password: null,
-})
-
-const submittedCards = ref([])
-
-const validateName = () => {
-    if (formData.value.username.length < 3) {
-        errors.value.username = 'Username must be at least 3 characters!!!'
-    } else {
-        errors.value.username = null
-    }
-}
-
-const validatePassword = () => {
-    const password = formData.value.password
-    const minLength = 8
-    const hasUppercase = /[A-Z]/.test(password)
-    const hasLowercase = /[a-z]/.test(password)
-    const hasNumber = /\d/.test(password)
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
-
-    if (password.length < minLength) {
-        errors.value.password = `Password must be at least ${minLength} characters!!!.`
-    } else if (!hasUppercase) {
-        errors.value.password = 'Password must contain at least one uppercase letter!!!.'
-    } else if (!hasLowercase) {
-        errors.value.password = 'Password must contain at least one lowercase letter!!!.'
-    } else if (!hasNumber) {
-        errors.value.password = 'Password must contain at least one number!!!.'
-    } else if (!hasSpecialChar) {
-        errors.value.password = 'Password must contain at least one special character!!!.'
-    } else {
-        errors.value.password = null
-    }
-}
-
-const submitForm = () => {
-    validateName(true)
-    validatePassword(true)
-    if (!errors.value.username && !errors.value.password) {
-        submittedCards.value.push({ ...formData.value });
-        console.log('Form submitted with:', formData.value)
-        formData.value = {
-            username: '',
-            password: ''
-        };
-    }
-}
+import languageIcon from '@/assets/language_icon.png'
+import jobIcon from '@/assets/job_icon.png'
+import healthIcon from '@/assets/health_icon.png'
 </script>
 
 <style scoped>
-h1 {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 1.5em;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0 auto;
+.home-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 20px;
 }
 
-.text-center p {
+.home-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.welcome-section,
+.features-section,
+.testimonials-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 2em;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.feature {
+    flex: 1;
+    max-width: 300px;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.feature img {
+    max-width: 100px;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.testimonials {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    flex: 1;
+    max-width: 400px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial p {
+    font-style: italic;
+    color: #555;
+}
+
+.cta-button {
+    padding: 15px 30px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     margin-top: 20px;
 }
 
-.btn {
-    font-weight: bold;
-}
-
-.text-danger {
-    color: red;
-    font-size: 0.875em;
-    margin-top: 5px;
+.cta-button:hover {
+    background-color: #45a049;
 }
 </style>

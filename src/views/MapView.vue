@@ -31,6 +31,18 @@ const clearMarkers = () => {
     markers.value = []
 }
 
+// 创建自定义的 marker 元素并添加 aria-label
+const createMarkerElementWithAltText = (altText) => {
+    const el = document.createElement('div')
+    el.className = 'marker'
+    el.setAttribute('aria-label', altText)
+    el.style.width = '30px'
+    el.style.height = '30px'
+    el.style.backgroundColor = '#3b82f6'
+    el.style.borderRadius = '50%'
+    return el
+}
+
 const searchLocation = async () => {
     const query = searchQuery.value
     if (!query) return
@@ -45,7 +57,7 @@ const searchLocation = async () => {
             map.setCenter([lng, lat])
             map.setZoom(14)
 
-            const newMarker = new mapboxgl.Marker()
+            const newMarker = new mapboxgl.Marker({ element: createMarkerElementWithAltText('Searched location marker') })
                 .setLngLat([lng, lat])
                 .addTo(map)
             markers.value.push(newMarker)
@@ -78,7 +90,7 @@ onMounted(() => {
 
     map.on('click', (e) => {
         if (isMarkerMode.value) {
-            const newMarker = new mapboxgl.Marker()
+            const newMarker = new mapboxgl.Marker({ element: createMarkerElementWithAltText('Location marker') })
                 .setLngLat(e.lngLat)
                 .addTo(map)
             markers.value.push(newMarker)
