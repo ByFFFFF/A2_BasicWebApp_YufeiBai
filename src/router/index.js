@@ -7,6 +7,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RatingView from '@/views/RatingView.vue'
 import DataTablesView from '@/views/DataTablesView.vue'
+import MapView from '@/views/MapView.vue'
 
 import { auth } from '../firebaseConfig'
 
@@ -46,6 +47,11 @@ const routes = [
     path: '/dataTables',
     name: 'DataTables',
     component: DataTablesView
+  },
+  {
+    path: '/map',
+    name: 'Map',
+    component: MapView
   }
 ]
 
