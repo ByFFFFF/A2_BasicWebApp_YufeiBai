@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "firebase": "^10.14.1",
     "firebaseui": "^6.1.0",
+    "html2pdf.js": "^0.10.2",
     "mapbox-gl": "^3.7.0",
     "postmark": "^4.0.5",
     "primeflex": "^3.3.1",
@@ -31,7 +32,7 @@
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.3",
     "vite": "^5.3.1",
     "vite-plugin-vue-devtools": "^7.3.1"
   }
