@@ -13,6 +13,7 @@
   "dependencies": {
     "@primevue/themes": "^4.1.0",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "firebase": "^10.14.1",
     "firebaseui": "^6.1.0",
     "postmark": "^4.0.5",
