@@ -11,6 +11,10 @@ import MapView from '@/views/MapView.vue'
 
 import { auth } from '../firebaseConfig'
 
+const checkUserRole = (role, requiredRoles) => {
+  return requiredRoles.includes(role)
+}
+
 const routes = [
   {
     path: '/',
@@ -63,13 +67,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const currentUser = auth.currentUser
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const requiredRoles = to.meta.roles || []
   const role = localStorage.getItem('userRole')
 
   if (requiresAuth && !currentUser) {
     alert('You must be logged in to access this page.')
     next({ name: 'Login' })
-  } else if (to.name === 'Admin' && role !== 'admin') {
-    alert('You do not have permission to access this page (Only Admin!!!).')
+  } else if (requiredRoles.length > 0 && !checkUserRole(role, requiredRoles)) {
+    alert('You do not have permission to access this page.')
     next({ name: 'Home' })
   } else {
     next()
