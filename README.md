@@ -34,4 +34,4 @@ npm run build
 npm run lint
 ```
 
-### BR(D4) Deployment to the Cloud : 7c4c9260.a2-basicwebapp-yufeibai.pages.dev
+### BR(D4) Deployment to the Cloud : 2a21c59b.a2-basicwebapp-yufeibai.pages.dev
